@@ -14,34 +14,28 @@
       <form action="" class="sort_form">
         <fieldset>
           <legend><h3>Sort Based On Crieterion</h3></legend>
-          <!-- <div class="option_container"> -->
             <select name="" value="" id="" class="crieterion">
                 <option value="">Crieterion</option>
               <% Object.keys(JSON.parse(payload)[0])?.forEach(entity =>{ %>
                 <option value="<%-entity%>"><%- entity %></option>
               <% }) %>
-
             </select>
             <input type="text">
-          <!-- </div> -->
           <button type="submit" >Query</button>
         </fieldset>
       </form>
 
       <script>
-          const sort_form = document.querySelector(".sort_form");
-          sort_form.addEventListener("submit", async(e)=>{
-            e.preventDefault();
-            const crieterion = e.target.children[0].children[1].value;
-            const value = e.target.children[0].children[2].value;
-            console.log(e.target.children[0].children[2].value)
-
-            location.href = `http://localhost:3001/api/find_on?crieterion=${crieterion}&value=${value}`;
-            const data = await res.json();
-            console.log(data)
-          })
-          // 
-
+        const sort_form = document.querySelector(".sort_form");
+        sort_form.addEventListener("submit", async(e)=>{
+          e.preventDefault();
+          const crieterion = e.target.children[0].children[1].value;
+          const value = e.target.children[0].children[2].value;
+          console.log(e.target.children[0].children[2].value)
+          location.href = `http://localhost:3001/api/find_on?crieterion=${crieterion}&value=${value}`;
+          const data = await res.json();
+          console.log(data)
+        })
       </script>
     </section>
 
@@ -107,7 +101,7 @@
       </script>
     </section>
 
-
+    
 
 
     <h2 class="title centralize" >Sell Shares</h2>
@@ -133,15 +127,74 @@
           <h4>Currency - <%- item.currency %></h4>
           <h4>Price Per Share - <%- item.price %></h4>
           <h4>Date Last Updated - <%- item.last_updated %></h4>
+          <div class="conversion_sub-section">
+            <form class="convert_form">
+              <h3>Convert to</h3>
+              <select value="" name="" id="">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="JPY">JPY</option>
+                <option value="AED">AED</option>
+                <option value="NGN">NGN</option>
+                <option value="BTC">BTC</option>
+              </select>
+              <button>Convert</button> 
+            </form>
+
+            <div class="converion_result">
+              <h3 class="conversion_result_text" ></h3>
+            </div>
+          </div>
           <form class="purchase_container">
             <input type="number" placeholder="Enter units of share">
             <input type="text" placeholder="Buyer" >
             <button>Purchase</button>
           </form>
+          
         </li>
       <% }) %>
     </ul>
   </main>
+
+
+  <!-- =============================== -->
+  <!-- Handler For Currency Conversion -->
+  <!-- =============================== -->
+  <script>
+    const conversionForms = document.querySelectorAll("form.convert_form");
+
+    conversionForms.forEach(form =>{
+      form.addEventListener("submit", async(e)=>{
+        e.preventDefault();
+        const amount = e.target.parentNode.parentNode.children[5].textContent.split("-")[1].trim();
+        const currencyFrom = e.target.parentNode.parentNode.children[4].textContent.split("-")[1].trim();
+        const currencyTo = e.target.children[1].value;
+        const conversionResultText = e.target.parentNode.children[1].children[0]
+        console.log(currencyFrom)
+
+        var myHeaders = new Headers();
+        myHeaders.append("apikey", "FnYpu5ExvdIsbLjLfTA3ceVjPngAoApg");
+
+        var requestOptions = {
+          method: 'GET',
+          redirect: 'follow',
+          headers: myHeaders
+        };
+        
+       
+        const res = await fetch(`https://api.apilayer.com/fixer/convert?to=${currencyTo}&from=${currencyFrom}&amount=${amount}`, requestOptions)
+        const data = await res.json();
+        conversionResultText.textContent = `${amount} ${currencyFrom} equals ${data.result} ${currencyTo}`;
+        console.log(data);
+      })
+    })
+
+    
+  </script>
+
+
+
 
   <script>
     /*============================*/
@@ -162,6 +215,7 @@
       alert(data.message)
       console.log(data.message);
     })
+
 
 
     /*===========================*/
