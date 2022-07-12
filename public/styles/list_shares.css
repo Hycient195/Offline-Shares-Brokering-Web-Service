@@ -1,8 +1,19 @@
+/*==================*/
+/* Body Style Rules */
+/*==================*/
 body{
   background-color: whitesmoke;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
+
+
+
+/*============================*/
+/* Utility And Generic Styles */
+/*============================*/
 .centralize{
   text-align: center;
 }
@@ -11,6 +22,12 @@ input:focus, select:focus{
   outline: 1px solid teal;
 }
 
+
+
+
+/*==============*/
+/* Main Section */
+/*==============*/
 main{
   margin: 2em;
 }
@@ -43,8 +60,10 @@ form:not(.sell_share, .purchase_container, .convert_form){
   padding: 0.5em 1.5em 1.5em;
   background-color: white;
   box-shadow: 2px 2px 2px rgba(0,0,0,0.3);
-  /* border-radius: 5px; */
 }
+
+
+
 
 /*=======================*/
 /* Share Selling Section */
@@ -52,17 +71,23 @@ form:not(.sell_share, .purchase_container, .convert_form){
 form.sell_share{
   width: 100%;
   max-width: 500px;
-  /* padding: 2em; */
   margin: 0 auto;
   margin-bottom: 4em;
-  /* border: 1px dashed black; */
   display: grid;
   grid-template-columns: 3fr 1fr;
 }
 
 form.sell_share > *{
-  padding: 1em 1em;
-  font-size: 0.9em;
+  padding: 0.7em 1em;
+  font-size: 1em;
+  border: 1px solid teal;
+  background-color: white;
+}
+
+form.sell_share > button{
+  background-color: teal;
+  color: white;
+  font-weight: bold;
 }
 
 
@@ -107,12 +132,43 @@ ul.shares_listing > li > div.card_pick{
   transform: rotate(270deg);
 }
 
+
+/*========================*/
+/* Conversion Sub-section */
+/*========================*/
 ul.shares_listing > li.share > div.conversion_sub-section {
   display: grid;
-  /* flex-direction: row; */
-  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr;
   gap: 1em;
   justify-content: space-around;
+  border: 1px solid teal;
+  padding: 1em;
+  border-radius: 3px;
+}
+
+div.conversion_sub-section > form {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+div.conversion_sub-section > form > select{
+  border: 1px solid teal;
+  background-color: white;
+  border-radius: 3px;
+  padding: 0.5em;
+}
+
+div.conversion_sub-section > form > button{
+  background-color: teal;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 0.7em;
+}
+
+div.conversion_sub-section h4{
+  margin: 0;
 }
 
 ul.shares_listing > li > form.purchase_container > *{
@@ -132,4 +188,32 @@ ul.shares_listing > li > form.purchase_container > button{
   color: white;
   font-weight: bold;
   
+}
+
+
+
+
+/*================================*/
+/* Media Query For Mobile Devices */
+/*================================*/
+@media (max-width: 800px){
+  main{
+    margin: 1.5em;
+  }
+  
+  form.purchase_container{
+    display: grid;
+    grid-template-rows: 1fr;
+    gap: 0.4em;
+  }
+
+  section.sort_section > form > fieldset, section.share_price > form > fieldset, form.share_price_range > fieldset{
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+  }
+
+  li.share{
+    width: 100%;
+  }
 }
