@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles/list_shares.css">
+  <title>Shares Listing</title>
+</head>
+<body>
+  <main>
+    
+    <section class="sort_section">
+      <form action="" class="sort_form">
+        <fieldset>
+          <legend><h3>Sort Based On Crieterion</h3></legend>
+          <!-- <div class="option_container"> -->
+            <select name="" value="" id="" class="crieterion">
+                <option value="">Crieterion</option>
+              <% Object.keys(JSON.parse(payload)[0])?.forEach(entity =>{ %>
+                <option value="<%-entity%>"><%- entity %></option>
+              <% }) %>
+
+            </select>
+            <input type="text">
+          <!-- </div> -->
+          <button type="submit" >Query</button>
+        </fieldset>
+      </form>
+
+      <script>
+          const sort_form = document.querySelector(".sort_form");
+          sort_form.addEventListener("submit", async(e)=>{
+            e.preventDefault();
+            const crieterion = e.target.children[0].children[1].value;
+            const value = e.target.children[0].children[2].value;
+            console.log(e.target.children[0].children[2].value)
+
+            location.href = `http://localhost:3001/api/find_on?crieterion=${crieterion}&value=${value}`;
+            const data = await res.json();
+            console.log(data)
+          })
+          // 
+
+      </script>
+    </section>
+
+
+    <section class="share_price">
+      <form action="" class="share_price_form">
+        <fieldset>
+          <legend><h3>Share Price</h3></legend>
+          <select name="" id="">
+            <option value="find_highest_share_price">Highest Share Price</option>
+            <option value="find_lowest_share_price">Lowest Share Price</option>
+          </select>
+
+          <select name="" value id="">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+          <button type="submit" >Query</button>
+        </fieldset>
+      </form>
+
+      <script>
+        const sharePriceForm = document.querySelector(".share_price_form");
+        sharePriceForm.addEventListener("submit", (e)=>{
+          e.preventDefault();
+          const action = e.target.children[0].children[1].value
+          const currency = e.target.children[0].children[2].value;
+          if(action == "find_highest_share_price"){ 
+            location.href = `http://localhost:3001/api/${action}?currency=${currency}`
+          }
+          else if(action == "find_lowest_share_price"){
+            location.href = `http://localhost:3001/api/${action}?currency=${currency}`
+          }
+        })
+      </script>
+    </section>
+
+
+    <section>
+      <form action="" class="share_price_range">
+        <fieldset>
+          <legend><h3>Share Price Range</h3></legend>
+
+          <input type="number" placeholder="Lowerbound">
+          <input type="number" placeholder="Upperbound">
+          <select name="" id="">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+          <button type="submit">Query</button>
+        </fieldset>
+      </form>
+
+      <script>
+        const sharePriceRange = document.querySelector(".share_price_range");
+        sharePriceRange.addEventListener("submit", (e)=>{
+          e.preventDefault();
+          const lowerbound = e.target.children[0].children[1].value
+          const upperbound = e.target.children[0].children[2].value
+          const currency = e.target.children[0].children[3].value
+          location.href = `http://localhost:3001/api/find_shares_in_range?lowerBound=${lowerbound}&upperBound=${upperbound}&currency=${currency}`
+        })
+      </script>
+    </section>
+
+
+
+
+    <h2 class="title centralize" >Sell Shares</h2>
+
+    <form action="" class="sell_share ">
+      <select name="select" id="">
+        <% JSON.parse(payload).forEach(company => { %>
+          <option value="<%- company.company_name %>"><%- company.company_name %> </option>
+        <% }) %>
+      </select>
+      <button type="submit">Sell Shares</button>
+    </form>
+
+    <h2 class="centralize" >Shares Listing</h2>
+    <ul class="shares_listing ">
+      <% JSON.parse(payload).forEach((item) => { %>
+        <li class="share">
+          
+          <h3>Company Name - <%- item.company_name %></h3>
+          <h4>Company Symbol - <%- item.company_symbol %></h4>
+          <div class="card_pick"></div> <!-- Do not remove from this position-->
+          <h4>Number Of Avaliable Shares - <%- item.avaliable_shares %></h4>
+          <h4>Currency - <%- item.currency %></h4>
+          <h4>Price Per Share - <%- item.price %></h4>
+          <h4>Date Last Updated - <%- item.last_updated %></h4>
+          <form class="purchase_container">
+            <input type="number" placeholder="Enter units of share">
+            <input type="text" placeholder="Buyer" >
+            <button>Purchase</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </main>
+
+  <script>
+    /*============================*/
+    /* Handler For Selling Shares */
+    /*============================*/
+    const shareSales = document.querySelector('.sell_share');
+    shareSales.addEventListener("submit", async(e)=>{
+      // e.preventDefault()
+      console.log(e.target.select.value)
+      const res = await fetch("http://localhost:3001/api/sell_share", {
+        method: "POST",
+        body: JSON.stringify({
+          company_name: e.target.select.value
+        }),
+        headers : {'Content-Type' : 'application/json'},
+      })
+      const data = await res.json();
+      alert(data.message)
+      console.log(data.message);
+    })
+
+
+    /*===========================*/
+    /* Handler For Buying Shares */
+    /*===========================*/
+    const shares = document.querySelectorAll(".share");
+    shares.forEach(share =>{
+      share.lastElementChild.addEventListener("submit", async(e)=>{
+        e.preventDefault()
+        // console.log(share.children[0].textContent)
+        const res = await fetch("http://localhost:3001/api/purchase_share", {
+          method: "POST",
+          body: JSON.stringify({
+            company_name: share.children[0].textContent.split("-")[1],
+            num_of_shares: share.lastElementChild.children[0].value,
+            buyer: share.lastElementChild.children[1].value,
+          }),
+          headers : {'Content-Type' : 'application/json'},
+        })
+        const data = await res.json()
+        alert(data.message)
+        console.log(data)
+      })
+    })
+  </script>
+ 
+</body>
+</html>

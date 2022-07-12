@@ -1,0 +1,120 @@
+body{
+  background-color: whitesmoke;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.centralize{
+  text-align: center;
+}
+
+input:focus, select:focus{
+  outline: 1px solid teal;
+}
+
+main{
+  margin: 2em;
+}
+
+main > section{
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: 2em;
+}
+
+main > section > form > fieldset > *:not(legend){
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+  border: 1px solid teal;
+  background-color: white;
+  border-radius: 3px;
+}
+
+main > section > form > fieldset > button{
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+}
+
+fieldset{
+  border: 1px solid teal;
+}
+
+/*=======================*/
+/* Share Selling Section */
+/*=======================*/
+form.sell_share{
+  width: 100%;
+  max-width: 500px;
+  /* padding: 2em; */
+  margin: 0 auto;
+  margin-bottom: 4em;
+  /* border: 1px dashed black; */
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+form.sell_share > *{
+  padding: 1em 1em;
+  font-size: 0.9em;
+}
+
+
+/*========================*/
+/* Shares Listing Section */
+/*========================*/
+ul.shares_listing{
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+  justify-content: space-around;
+  padding-left: 0;
+}
+
+
+ul.shares_listing > li{
+  list-style: none;
+  box-shadow: 3px 3px 4px  rgba(0,0,0,0.3);
+  padding: 1.5em;
+  background-color: white;
+  position: relative;
+}
+
+
+ul.shares_listing > li > *{
+  margin: 0;
+  margin: 0.5em 0;
+  font-weight: normal;
+}
+
+ul.shares_listing > li > div.card_pick{
+  border-right: 30px solid teal;
+  border-left: 0px solid white;
+  border-top: 0px solid white;
+  border-bottom: 30px solid white;
+  height: 0px;
+  width: 0px;
+  position: absolute;
+  top: -9px;
+  left: 0;
+  transform: rotate(270deg);
+}
+
+ul.shares_listing > li > form.purchase_container > *{
+  padding: 0.5em 0.5em;
+  border: 1px solid teal;
+  font-size: 0.9em;
+  border-radius: 3px;
+}
+
+ul.shares_listing > li > form.purchase_container > input::placeholder{
+  color: rgb(140, 179, 179);
+}
+
+ul.shares_listing > li > form.purchase_container > button{
+  border: 1px solid teal;
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  
+}
